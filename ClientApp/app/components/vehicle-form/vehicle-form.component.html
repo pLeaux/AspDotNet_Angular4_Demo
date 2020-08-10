@@ -1,0 +1,73 @@
+<ng2-toasty [position]="'top-right'"></ng2-toasty> 
+ 
+<div>
+    <h3> {{title}} </h3>
+</div>
+
+<div class="form-group">
+    <div  style="position:absolute; right:20px; text-align:right; width:30%; ">
+        <span>
+            <input class="form-check-input" type="checkbox" id="showDebugInfoCheck" [checked]="showDebugInfo == true" [(ngModel)]="showDebugInfo">
+            <label class="form-check-label" for="showDebugInfoCheck"> Show debug info</label>
+        </span>
+    </div>
+    <div class="well" *ngIf="showDebugInfo">
+        Debug, Vehicle object: {{ vehicle | json }}
+    </div>
+</div>
+
+<form (ngSubmit)="submitData($event)" #formElement="ngForm">
+    <div class="form-group">
+        <label for="brandInput">Brand</label>
+        <select class="form-control" id="brandSelect" name="brandSelect" (change)="onBrandChange($event)" [(ngModel)]="vehicle.brandId" #brandElement="ngModel" required>
+            <option> </option>
+            <option name="myOption" *ngFor="let brand of brands" value="{{brand.id}}"> {{brand.name}} </option>
+        </select>
+        <div class="alert alert-danger" *ngIf="brandElement.touched && brandElement.invalid">Brand is required.</div>
+    </div>
+    <div class="form-group">
+        <label for="modelSelect">Model</label>
+        <select type="text" class="form-control" id="modelSelect" name="modelSelect" [(ngModel)]="vehicle.modelId" #modelElement="ngModel" required>
+            <option> </option>
+            <option *ngFor="let model of models" value="{{model.id}}"> {{model.name}} </option>
+        </select>
+        <div class="alert alert-danger" *ngIf="modelElement.touched && modelElement.invalid">Model is required.</div>
+    </div>
+
+    <div class="form-group">
+        <h4>Features</h4>
+        <div class="form-check" *ngFor="let feature of features">
+            <input class="form-check-input" type="checkbox" id="feature{{feature.id}}" (change)="onFeatureChange($event, feature.id)" [checked]="vehicle.featureIds.includes(feature.id)">
+            <label class="form-check-label" for="feature{{feature.id}}"> {{feature.name}} </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <h4>Is this vehicle registered? </h4>
+        <input class="form-check-input" type="radio" name="registeredRadios" id="registeredRadio" [value]=true [checked]="vehicle.isRegistered === true" [(ngModel)]="vehicle.isRegistered">
+        <label class="form-check-label" for="registeredRadio"> Yes </label>
+        <input class="form-check-input" type="radio" name="registeredRadios" id="notRegisteredRadio" [value]=false [checked]="vehicle.isRegistered === false" [(ngModel)]="vehicle.isRegistered">
+        <label class="form-check-label" for="notRegisteredRadio"> No </label>
+    </div>
+
+    <h4>Contact</h4>
+    <div class="form-group">
+        <label for="contactName"> Name </label>
+        <input class="form-control" type="text" id="contactName" name="contactName" [(ngModel)]="vehicle.contact.name" #contactNameElement="ngModel" required>
+        <div class="alert alert-danger" *ngIf="contactNameElement.touched && contactNameElement.invalid">Contact Name is required.</div>
+    </div>
+    <div class="form-group">
+        <label for="contactPhone"> Phone </label>
+        <input class="form-control" type="text" id="contactPhone" name="contactPhone" [(ngModel)]="vehicle.contact.phone" #contactPhoneElement="ngModel" required>
+        <div class="alert alert-danger" *ngIf="contactPhoneElement.touched && contactPhoneElement.invalid">Contact Phone is required.</div>
+    </div>
+    <div class="form-group">
+        <label for="contactName"> Email </label>
+        <input class="form-control" type="text" id="contactEmail" name="contactEmail" [(ngModel)]="vehicle.contact.email">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="formElement.invalid">Save</button> 
+    <button type="button" class="btn btn-danger" [disabled]="! vehicle.id" (click)="deleteVehicle(vehicle.id)">Delete</button>
+    <a class="btn btn-default" [routerLink]="['/vehicle-list']">Cancel</a>  
+
+</form>

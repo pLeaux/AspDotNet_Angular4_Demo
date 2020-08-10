@@ -1,0 +1,44 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]="['/home']">VEGA</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/home']">
+                        <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li> 
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/vehicle-list']">
+                        <span class='glyphicon glyphicon-th-list'></span> Vehicle list
+                    </a>
+                </li>
+                <li>
+                    <button class="btn btn-link" *ngIf="!auth.isAuthenticated()" (click)="auth.login()"> 
+                        <span class='glyphicon glyphicon-log-in'></span> Log In 
+                    </button>
+                </li>
+                <li>
+                    <button class="btn btn-link" *ngIf="auth.isAuthenticated()" (click)="auth.logout()"> 
+                        <span class='glyphicon glyphicon-log-out'></span> Log Out 
+                    </button>
+                </li>
+                <li [routerLinkActive]="['link-active']" [routerLinkActiveOptions]="{exact: true}">
+                    <a [routerLink]="['/admin']" *ngIf="auth.isAdmin()">
+                        <span class='glyphicon glyphicon-king'></span> Admin 
+                    </a>
+                </li> 
+                 
+            </ul>
+        </div>
+    </div>
+</div>
